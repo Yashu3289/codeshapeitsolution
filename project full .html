@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>EDUHUB</title>
+  <!-- Google Material Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <!-- Google font: Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* Reset and base */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #fff;
+      color: #333;
+      margin: 0;
+      padding: 0;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* Variables */
+    :root {
+      --primary-color: #e91e63;
+      --primary-light: #f8bbd0;
+      --secondary-color: #3f51b5;
+      --tertiary-color: #4caf50;
+      --text-color-dark: #111;
+      --text-color-light: #fefefe;
+      --background-gradient-left: linear-gradient(180deg, #9ae7e1 0%, #f2733f 100%);
+      --background-gradient-right: linear-gradient(180deg, #450862 0%, #aa2a3a 100%);
+      --background-gradient-bottom: linear-gradient(180deg, #db006a 0%, #851975 100%);
+      --shadow-card: rgba(0, 0, 0, 0.1);
+      --spacing-sm: 12px;
+      --spacing-md: 20px;
+      --spacing-lg: 32px;
+      --border-radius: 12px;
+    }
+
+    /* Container */
+    .container {
+      max-width: 1280px;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 0 var(--spacing-md);
+    }
+
+    /* Header */
+    header {
+      background-color: #fff;
+      padding: 16px var(--spacing-md);
+      border-bottom: 1px solid #ddd;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    header h1 {
+      font-weight: 700;
+      font-size: 1.8rem;
+      letter-spacing: 1.5px;
+      color: var(--primary-color);
+      user-select: none;
+    }
+
+    /* Navigation */
+    nav.desktop-nav {
+      display: flex;
+      gap: var(--spacing-lg);
+    }
+
+    nav.desktop-nav a {
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--text-color-dark);
+      cursor: pointer;
+      position: relative;
+      padding: 8px;
+      border-radius: 8px;
+      transition: background-color 0.3s ease;
+    }
+    nav.desktop-nav a:hover,
+    nav.desktop-nav a:focus {
+      background-color: var(--primary-light);
+      outline: none;
+    }
+
+    /* Hamburger menu button for mobile */
+    .hamburger {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+      color: var(--primary-color);
+      font-size: 32px;
+    }
+
+    /* Mobile nav overlay */
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      top: 56px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #fff;
+      z-index: 2000;
+      flex-direction: column;
+      padding: 24px var(--spacing-md);
+      overflow-y: auto;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    }
+    .mobile-nav.show {
+      display: flex;
+    }
+    .mobile-nav a {
+      font-weight: 600;
+      font-size: 1.1rem;
+      padding: 16px 0;
+      border-bottom: 1px solid #eee;
+      color: var(--text-color-dark);
+    }
+    .mobile-nav a:last-child {
+      border-bottom: none;
+    }
+
+    /* Main layout grid */
+    main {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--spacing-lg);
+      padding-top: var(--spacing-lg);
+      padding-bottom: var(--spacing-lg);
+      min-height: 80vh;
+    }
+
+    /* Left section with digital resources side */
+    .digital-resources {
+      background: var(--background-gradient-left);
+      border-radius: var(--border-radius) var(--border-radius) 0 0;
+      padding: var(--spacing-lg);
+      color: #1b3b36;
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-md);
+      min-height: 400px;
+    }
+
+    .digital-resources h2 {
+      font-weight: 700;
+      font-size: 1.3rem;
+      letter-spacing: 1.2px;
+      margin: 0 0 8px 0;
+      text-align: center;
+      color: #084733;
+      user-select: none;
+      text-transform: uppercase;
+    }
+    .digital-resources h3 {
+      font-weight: 600;
+      color: #084733;
+      font-size: 1rem;
+      text-align: center;
+      margin-top: 0;
+      margin-bottom: var(--spacing-md);
+    }
+    .digital-tables {
+      display: flex;
+      gap: var(--spacing-md);
+      justify-content: center;
+      flex-wrap: wrap;
+      flex-grow: 1;
+    }
+
+    /* Resource Subject card styles */
+    .subject-card {
+      background: #fff;
+      border-radius: var(--border-radius);
+      box-shadow: 0 4px 12px var(--shadow-card);
+      padding: var(--spacing-md);
+      flex: 1 1 240px;
+      max-width: 280px;
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-sm);
+      color: #222;
+      user-select: none;
+    }
+    .subject-card h4 {
+      margin-top: 0;
+      font-weight: 700;
+      color: var(--primary-color);
+      text-align: center;
+      border-bottom: 2px solid var(--primary-color);
+      padding-bottom: 6px;
+      margin-bottom: 12px;
+    }
+    .subject-card ul {
+      list-style-type: disc;
+      padding-left: 20px;
+      margin: 0;
+      font-size: 0.9rem;
+      max-height: 235px;
+      overflow-y: auto;
+    }
+    .subject-card ul li {
+      margin-bottom: 6px;
+    }
+
+    /* Right section: all departments */
+    .all-departments {
+      background: var(--background-gradient-right);
+      border-radius: 0 0 var(--border-radius) var(--border-radius);
+      padding: var(--spacing-lg);
+      color: #eee;
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-md);
+      min-height: 400px;
+    }
+    .all-departments h2 {
+      font-weight: 700;
+      font-size: 1.3rem;
+      letter-spacing: 1.2px;
+      margin: 0 0 12px 0;
+      user-select: none;
+    }
+    .all-departments .highlight {
+      color: var(--primary-color);
+      font-weight: 700;
+      user-select: none;
+    }
+
+    .departments-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: var(--spacing-md);
+      justify-items: center;
+      flex-grow: 1;
+    }
+
+    .department-card {
+      background: rgba(255 255 255 / 0.1);
+      border-radius: var(--border-radius);
+      padding: 16px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.09);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: default;
+      user-select: none;
+      transition: background-color 0.3s ease;
+    }
+    .department-card:hover,
+    .department-card:focus {
+      background-color: rgba(255 255 255 / 0.2);
+      outline: none;
+    }
+
+    .department-icon {
+      font-size: 40px;
+      margin-bottom: 10px;
+      color: var(--primary-color);
+    }
+    .department-label {
+      font-weight: 600;
+      color: white;
+      font-size: 0.9rem;
+      text-align: center;
+    }
+
+    /* Bottom area: semester cards */
+    .semester-section {
+      background: var(--background-gradient-bottom);
+      padding: var(--spacing-lg);
+      display: flex;
+      gap: var(--spacing-md);
+      justify-content: center;
+      flex-wrap: wrap;
+      border-radius: 0 0 var(--border-radius) var(--border-radius);
+    }
+
+    .semester-card {
+      background-color: #222;
+      border-radius: var(--border-radius);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      padding: var(--spacing-md);
+      width: 120px;
+      min-height: 110px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+      user-select: none;
+      border: 3px solid #e91e63;
+      transition: border-color 0.3s ease;
+    }
+    .semester-card.blue {
+      border-color: var(--secondary-color);
+    }
+
+    .semester-card .sem-number {
+      font-weight: 700;
+      font-size: 2.5rem;
+      text-align: center;
+      flex-grow: 1;
+      line-height: 1.1;
+      letter-spacing: 3px;
+      user-select: text;
+    }
+    .semester-card .sem-text {
+      text-align: center;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      font-size: 0.95rem;
+      user-select: text;
+    }
+
+    /* Responsive grid for two main sections */
+    @media (min-width: 768px) {
+      main {
+        grid-template-columns: 1.6fr 1fr;
+        column-gap: var(--spacing-lg);
+        padding: var(--spacing-lg) var(--spacing-md);
+      }
+    }
+
+    /* Layout adjustments for sem cards on smaller screens */
+    @media (max-width: 575px) {
+      .semester-section {
+        justify-content: space-around;
+      }
+      .semester-card {
+        width: 90px;
+        padding: 12px 12px;
+      }
+      .semester-card .sem-number {
+        font-size: 2rem;
+      }
+      .semester-card .sem-text {
+        font-size: 0.8rem;
+      }
+    }
+    /* Responsive for hamburger */
+    @media (max-width: 767px) {
+      nav.desktop-nav {
+        display: none;
+      }
+      .hamburger {
+        display: block;
+      }
+    }
+
+    /* Scrollbar style for resource lists */
+    .subject-card ul::-webkit-scrollbar {
+      width: 8px;
+    }
+    .subject-card ul::-webkit-scrollbar-track {
+      background: #ddd;
+      border-radius: 8px;
+    }
+    .subject-card ul::-webkit-scrollbar-thumb {
+      background-color: var(--primary-color);
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>EDUHUB</h1>
+    <button class="hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-menu">
+      <span class="material-icons" aria-hidden="true">menu</span>
+    </button>
+    <nav class="desktop-nav" role="navigation" aria-label="Primary Navigation">
+      <a href="#" tabindex="0">Home</a>
+      <a href="#" tabindex="0">Resources</a>
+      <a href="#" tabindex="0">Departments</a>
+      <a href="#" tabindex="0">Contact</a>
+    </nav>
+  </header>
+
+  <nav class="mobile-nav" id="mobile-menu" role="navigation" aria-label="Mobile Navigation" aria-hidden="true">
+    <a href="#" tabindex="0">Home</a>
+    <a href="#" tabindex="0">Resources</a>
+    <a href="#" tabindex="0">Departments</a>
+    <a href="#" tabindex="0">Contact</a>
+  </nav>
+
+  <main class="container" role="main">
+    <section class="digital-resources" aria-labelledby="digital-resources-title">
+      <h2 id="digital-resources-title">DIGITAL RESOURCE</h2>
+      <h3>Class XII</h3>
+      <div class="digital-tables">
+
+        <article class="subject-card" aria-label="Computer Science Resources">
+          <h4>CSE</h4>
+          <ul>
+            <li>Data Structures</li>
+            <li>Operating Systems</li>
+            <li>Computer Networks</li>
+            <li>Database Systems</li>
+            <li>Software Engineering</li>
+            <li>Programming Languages</li>
+            <li>Artificial Intelligence</li>
+          </ul>
+        </article>
+
+        <article class="subject-card" aria-label="Electronics and Communication Resources">
+          <h4>ECE</h4>
+          <ul>
+            <li>Analog Circuits</li>
+            <li>Digital Communication</li>
+            <li>Microprocessors</li>
+            <li>Signal Processing</li>
+            <li>Embedded Systems</li>
+            <li>VLSI Design</li>
+            <li>Control Systems</li>
+          </ul>
+        </article>
+
+        <article class="subject-card" aria-label="Mechanical Engineering Resources">
+          <h4>ME</h4>
+          <ul>
+            <li>Thermodynamics</li>
+            <li>Fluid Mechanics</li>
+            <li>Machine Design</li>
+            <li>Manufacturing Processes</li>
+            <li>Heat Transfer</li>
+            <li>Robotics</li>
+            <li>Automobile Engineering</li>
+          </ul>
+        </article>
+
+      </div>
+    </section>
+
+    <section class="all-departments" aria-labelledby="all-departments-title">
+      <h2 id="all-departments-title">ALL <span class="highlight">DEPARTMENTS</span></h2>
+      <div class="departments-grid">
+
+        <article class="department-card" tabindex="0" aria-label="Computer Science Department">
+          <span class="material-icons department-icon" aria-hidden="true">computer</span>
+          <div class="department-label">CSE</div>
+        </article>
+
+        <article class="department-card" tabindex="0" aria-label="Electronics and Communication Department">
+          <span class="material-icons department-icon" aria-hidden="true">memory</span>
+          <div class="department-label">ECE</div>
+        </article>
+
+        <article class="department-card" tabindex="0" aria-label="Civil Engineering Department">
+          <span class="material-icons department-icon" aria-hidden="true">gavel</span>
+          <div class="department-label">CE</div>
+        </article>
+
+        <article class="department-card" tabindex="0" aria-label="Mechanical Engineering Department">
+          <span class="material-icons department-icon" aria-hidden="true">engineering</span>
+          <div class="department-label">ME</div>
+        </article>
+
+        <article class="department-card" tabindex="0" aria-label="Architecture Department">
+          <span class="material-icons department-icon" aria-hidden="true">architecture</span>
+          <div class="department-label">AR</div>
+        </article>
+
+        <article class="department-card" tabindex="0" aria-label="Electrical Engineering Department">
+          <span class="material-icons department-icon" aria-hidden="true">bolt</span>
+          <div class="department-label">EE</div>
+        </article>
+
+      </div>
+    </section>
+  </main>
+
+  <section class="semester-section" aria-label="Semester Navigation">
+    <div class="semester-card">
+      <div class="sem-number">01</div>
+      <div class="sem-text">1st Sem</div>
+    </div>
+    <div class="semester-card blue">
+      <div class="sem-number">02</div>
+      <div class="sem-text">2nd Sem</div>
+    </div>
+    <div class="semester-card">
+      <div class="sem-number">03</div>
+      <div class="sem-text">3rd Sem</div>
+    </div>
+    <div class="semester-card blue">
+      <div class="sem-number">04</div>
+      <div class="sem-text">4th Sem</div>
+    </div>
+  </section>
+
+  <footer role="contentinfo" style="background:#222; color:#eee; padding:16px; text-align:center; font-size:0.9rem;">
+    &copy; 2024 EDUHUB. All Rights Reserved.
+  </footer>
+
+  <script>
+    // Hamburger menu toggle
+    const hamburgerBtn = document.querySelector('.hamburger');
+    const mobileNav = document.querySelector('.mobile-nav');
+
+    hamburgerBtn.addEventListener('click', () => {
+      const expanded = hamburgerBtn.getAttribute('aria-expanded') === 'true' || false;
+      hamburgerBtn.setAttribute('aria-expanded', !expanded);
+      if (!expanded) {
+        mobileNav.classList.add('show');
+        mobileNav.setAttribute('aria-hidden', 'false');
+      } else {
+        mobileNav.classList.remove('show');
+        mobileNav.setAttribute('aria-hidden', 'true');
+      }
+    });
+
+    // Close mobile nav on link click
+    mobileNav.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileNav.classList.remove('show');
+        mobileNav.setAttribute('aria-hidden', 'true');
+        hamburgerBtn.setAttribute('aria-expanded', false);
+      });
+    });
+  </script>
+</body>
+</html>
+
